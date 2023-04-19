@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import uniqid from "uniqid";
 import { useQuery, useMutation, gql } from "@apollo/client";
 
@@ -9,6 +9,21 @@ const AuthContext = React.createContext({
   login: () => {},
   logout: () => {},
 });
+
+const CHECK_USER = gql`
+  mutation CheckUser($input: CheckUserInput!) {
+    checkUser(input: $input) {
+      user {
+        name
+        id
+        email
+        password
+        count
+      }
+    }
+  }
+`;
+
 const LOGIN_MUTATION = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
@@ -40,9 +55,33 @@ const SIGNUP_MUTATION = gql`
 
 export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [loginMutation] = useMutation(LOGIN_MUTATION);
   const [signupMutation] = useMutation(SIGNUP_MUTATION);
+  const [checkUserMutation] = useMutation(CHECK_USER);
+
+  useEffect(() => {
+    const checkForLoggedInUser = async () => {
+      const existingToken = localStorage.getItem("user");
+      if (existingToken) {
+        console.log(typeof existingToken);
+        try {
+          const response = await checkUserMutation({
+            variables: {
+              input: {
+                token: existingToken,
+              },
+            },
+          });
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    checkForLoggedInUser();
+  }, []);
 
   const signUpHandler = async (email, password, name, navigate, setError) => {
     setIsLoading(true);
@@ -56,11 +95,11 @@ export const AuthContextProvider = (props) => {
           },
         },
       });
-      const { token, user } = response.data.signup;
+      const { token, newUser } = response.data.signup;
       setUser({ isFirstLogin: true, ...user });
       localStorage.setItem("user", token);
       setIsLoading(false);
-      navigate(`../user/${user._id}`);
+      navigate(`../user/${newUser._id}`);
     } catch (error) {
       console.log(error);
       setError(error.message);
@@ -83,11 +122,11 @@ export const AuthContextProvider = (props) => {
         },
       });
 
-      const { token, user } = response.data.login;
+      const { token, newUser } = response.data.login;
       setUser({ isFirstLogin: false, ...user });
       localStorage.setItem("user", token);
       setIsLoading(false);
-      navigate(`../user/${user._id}`);
+      navigate(`../user/${newUser._id}`);
     } catch (error) {
       console.log(error);
       setError(error.message);
