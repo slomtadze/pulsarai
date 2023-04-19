@@ -15,6 +15,11 @@ module.exports = {
       sm: { max: "639px" },
       // => @media (max-width: 639px) { ... }
     },
+    extend:{
+      backgroundImage: {
+        "herro-img": "url('/src/assets/profile-bg.jpg')",
+      },
+    }
   },
   plugins: [],
 };
