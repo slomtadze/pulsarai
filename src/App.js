@@ -7,8 +7,6 @@ import SignUp from "./pages/SignUp";
 import UserProfile from "./pages/UserProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-/* import ProtectedRoute from "./components/ProtectedRoute"; */
-
 function App() {
   return (
     <Routes>
