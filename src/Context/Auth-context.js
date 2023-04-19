@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import uniqid from "uniqid";
+import { ApolloClient, ApolloProvider, InMemoryCache, gql } from '@apollo/client';
+
+
+
+
 
 const AuthContext = React.createContext({
   user: {},
@@ -11,20 +16,29 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
 
+  const apoloClient = new ApolloClient({
+    uri: props.client.uri,
+    cache: new InMemoryCache(),
+  });
+
   const signUpHandler = async (email, password, name, navigate, setError) => {
     const id = uniqid();
-    setUser({ email, password, name, id, loginCount: 0 });
+    setUser({ email, password, name, id, loginCount: 1, isFirstLogin: true });
     console.log({ email, password, name, id, loginCount: 0 });
-    navigate(`../user/${id}`);
+    navigate(`../user/${id}`, {state: {firstLogin:true}});
   };
 
   const loginHandler = async (email, password, navigate, setError) => {
-    console.log("login");
+
+    const id = uniqid(); 
+    setUser({ email, password, loginCount: 1, isFirstLogin: true });
+    navigate(`../user/${id}`, {state: {firstLogin:false}});  
+    console.log({email, password});
+
   };
 
   const logoutHandler = () => {
-    console.log("logout");
-    /* signOut(auth); */
+    console.log("logout");    
     setUser(null);
   };
 
@@ -36,9 +50,11 @@ export const AuthContextProvider = (props) => {
   };
 
   return (
+    <ApolloProvider client={apoloClient}>    
     <AuthContext.Provider value={contextValue}>
       {props.children}
     </AuthContext.Provider>
+    </ApolloProvider>
   );
 };
 
