@@ -26,7 +26,7 @@ const SignIn = () => {
 
   return (
     <SignWrapper>
-      <div className=" bg-black/50 p-4 rounded-lg sm:w-full">
+      <div className=" bg-black/50 p-4 rounded-lg sm:w-full sm:h-1/2 ">
         <h2 className="text-center text-white mt-6 text-2xl font-bold">
           Sign In
         </h2>
@@ -35,7 +35,7 @@ const SignIn = () => {
           onSubmit={onSubmit}
           validationSchema={validationSchema}
         >
-          <Form className="w-[350px] mb-6 px-4 pt-4 relative">
+          <Form className="w-[350px] mb-6 px-4 pt-4 relative items-center sm:w-full">
             <Input label="Email" type="email" id="email" />
             <Input label="Password" type="password" id="password" />
             {error && (
