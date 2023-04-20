@@ -1,12 +1,19 @@
-import React, { useContext, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { gql, useSubscription } from "@apollo/client";
 import AuthContext from "../Context/Auth-context";
 import Button from "../layout/Button";
+import { USER_COUNT_SUBSCRIPTION } from "../graphql/mutations";
+
+
+
 
 const UserProfile = () => {
-  const { id } = useParams();
   const { user, logout } = useContext(AuthContext);
-  console.log(user);
+  const { data, loading, error } = useSubscription(USER_COUNT_SUBSCRIPTION);
+  if(!loading){
+    console.log(data, loading, error);
+  }
+  
   return (
     <div className="h-screen w-screen bg-herro-img flex-col justify-center  bg-cover bg-center">
       <div className="flex-col justify-center p-8">

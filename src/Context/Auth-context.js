@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
+import { CHECK_USER, LOGIN_MUTATION, SIGNUP_MUTATION } from "../graphql/mutations";
 
 const AuthContext = React.createContext({
   user: {},
@@ -11,7 +12,7 @@ const AuthContext = React.createContext({
   logout: () => {},
 });
 
-const CHECK_USER = gql`
+/* const CHECK_USER = gql`
   mutation CheckUser($input: CheckUserInput!) {
     checkUser(input: $input) {
       user {
@@ -52,7 +53,7 @@ const SIGNUP_MUTATION = gql`
       }
     }
   }
-`;
+`; */
 
 export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
