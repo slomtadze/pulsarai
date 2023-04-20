@@ -17,7 +17,7 @@ const validationSchema = Yup.object({
 });
 
 const SignIn = () => {
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const onSubmit = (values) => {
@@ -26,7 +26,7 @@ const SignIn = () => {
 
   return (
     <SignWrapper>
-      <div className=" bg-black/50 p-4 rounded-lg sm:w-full sm:h-1/2 ">
+      <div className=" bg-black/50 p-4 rounded-lg sm:w-full sm:h-full ">
         <h2 className="text-center text-white mt-6 text-2xl font-bold">
           Sign In
         </h2>
@@ -39,7 +39,7 @@ const SignIn = () => {
             <Input label="Email" type="email" id="email" />
             <Input label="Password" type="password" id="password" />
             {error && (
-              <div className="absolute text-red-800 italic bottom-20 w-1/2">
+              <div className=" bg-red-900/50 text-white italic bottom-20 max-w-full w-fit p-2 overflow-wrap: break-word">
                 {error}
               </div>
             )}

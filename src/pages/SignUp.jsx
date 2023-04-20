@@ -41,7 +41,7 @@ const SignUp = () => {
 
   return (
     <SignWrapper>
-      <div className="bg-black/80 p-4 rounded-lg sm:w-full">
+      <div className="bg-black/80 p-4 rounded-lg sm:w-full sm:h-full">
         <h2 className="text-center text-white mt-6 text-2xl font-bold">
           Sign Up
         </h2>
@@ -56,9 +56,9 @@ const SignUp = () => {
             <Input type="password" id="password" label="Password" />
             <Input type="password" id="confirm" label="Confirm Password" />
             {error && (
-              <div className="absolute text-red-800 italic bottom-28 w-1/2">
-                {error}
-              </div>
+              <div className=" bg-red-900/50 text-white italic bottom-20 max-w-full w-fit p-2 overflow-wrap: break-word">
+              {error}
+            </div>
             )}
             <div className="pb-2">
               <Button title="Confirm" type="submit" />
