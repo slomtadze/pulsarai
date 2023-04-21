@@ -43,10 +43,10 @@ export const SIGNUP_MUTATION = gql`
   }
 `;
 
-export const USER_COUNT_SUBSCRIPTION = gql`
-  subscription {
+/* export const USER_COUNT_SUBSCRIPTION = gql`
+  subscription UserCountUpdated {
     userCountUpdated {
       updatedUserCount
     }
   }
-`;
+`; */

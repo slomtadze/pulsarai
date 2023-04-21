@@ -1,33 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  
-  ApolloProvider,
-  
-} from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./Context/Auth-context";
 import "./index.css";
 import client from "./graphql/apolloClient";
 
-/* const httpLink = new HttpLink({ uri: "http://localhost:4000/graphql" });
-const cache = new InMemoryCache();
-
-const client = new ApolloClient({
-  link: httpLink,
-  cache: cache,
-}); */
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
     <BrowserRouter>
-    <AuthContextProvider>
-      
-        <App />
-      
-    </AuthContextProvider>
+      <AuthContextProvider>      
+        <App />      
+      </AuthContextProvider>
     </BrowserRouter>
   </ApolloProvider>
 );

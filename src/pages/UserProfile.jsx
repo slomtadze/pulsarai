@@ -2,17 +2,25 @@ import React, { useContext } from "react";
 import { gql, useSubscription } from "@apollo/client";
 import AuthContext from "../Context/Auth-context";
 import Button from "../layout/Button";
-import { USER_COUNT_SUBSCRIPTION } from "../graphql/mutations";
 
+
+const USER_COUNT_SUBSCRIPTION = gql`
+  subscription  {
+    userCountUpdated {
+      updatedUserCount
+    }
+  }
+`;
 
 
 
 const UserProfile = () => {
   const { user, logout } = useContext(AuthContext);
-  const { data, loading, error } = useSubscription(USER_COUNT_SUBSCRIPTION);
-  if(!loading){
-    console.log(data, loading, error);
-  }
+  const { data, loading } = useSubscription(
+    USER_COUNT_SUBSCRIPTION, 
+    {onData: (data) =>  console.log("data")}
+    );
+  
   
   return (
     <div className="h-screen w-screen bg-herro-img flex-col justify-center  bg-cover bg-center">
