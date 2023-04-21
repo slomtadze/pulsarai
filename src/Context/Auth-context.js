@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { CHECK_USER, LOGIN_MUTATION, SIGNUP_MUTATION } from "../graphql/mutations";
+import { CHECK_USER, LOGIN_MUTATION, REFRESH_TOKEN, SIGNUP_MUTATION } from "../graphql/mutations";
 
 const AuthContext = React.createContext({
   user: {},
@@ -18,6 +19,9 @@ export const AuthContextProvider = (props) => {
   const [loginMutation] = useMutation(LOGIN_MUTATION);
   const [signupMutation] = useMutation(SIGNUP_MUTATION);
   const [checkUserMutation] = useMutation(CHECK_USER);
+  const [refreshTokenMutation] = useMutation(REFRESH_TOKEN);
+
+  const [cookies, setCookie, removeCookie] = useCookies(["refreshToken"]);
 
   const navigate = useNavigate()
 
@@ -39,7 +43,40 @@ export const AuthContextProvider = (props) => {
           setIsLoading(false)
           navigate(`../user/${existUser._id}`)
         } catch (error) {
+          if(error.message === "TokenExpired"){
+            try {
+              
+              const refreshToken = cookies.refreshToken
+
+              console.log(refreshToken)
+
+              if(!refreshToken){
+                navigate("/")
+                setIsLoading(false)
+              }
+
+              const response = await refreshTokenMutation({
+                variables: {
+                  input: {
+                    refreshToken: refreshToken,
+                  },
+                },
+              });
+              const { token, user } = response.data.refreshToken
+              localStorage.setItem("user", token);
+              setUser({...user})
+              setIsLoading(false)
+              navigate(`../user/${user._id}`)
+            } catch (error) {
+              console.log(error.message)
+              navigate("/")
+            }
+          }
           console.log(error.message);
+          if(error.message !== "TokenExpired"){
+            navigate("/")
+          }
+          
         }
       }
     };
@@ -58,20 +95,16 @@ export const AuthContextProvider = (props) => {
           },
         },
       });
-      const { token, user: newUser } = response.data.signup;
+      const { token, refreshToken, user: newUser } = response.data.signup;
       setUser({ isFirstLogin: true, ...newUser });
       localStorage.setItem("user", token);
-      setIsLoading(false);
-      
+      setCookie("refreshToken", refreshToken)
+      setIsLoading(false);      
       navigate(`../user/${newUser._id}`);
     } catch (error) {
       console.log(error);
       setError(error.message);
     }
-    /* const id = uniqid();
-    setUser({ email, password, name, id, loginCount: 1, isFirstLogin: true });
-    console.log({ email, password, name, id, loginCount: 0 });
-    navigate(`../user/${id}`, { state: { firstLogin: true } }); */
   };
 
   const loginHandler = async (email, password, navigate, setError) => {
@@ -86,9 +119,10 @@ export const AuthContextProvider = (props) => {
         },
       });
 
-      const { token, user: newUser } = response.data.login;
+      const { token, refreshToken, user: newUser } = response.data.login;
       setUser({ isFirstLogin: false, ...newUser });
       localStorage.setItem("user", token);
+      setCookie("refreshToken", refreshToken)
       setIsLoading(false);
       navigate(`../user/${newUser._id}`)
     } catch (error) {
@@ -99,6 +133,7 @@ export const AuthContextProvider = (props) => {
 
   const logoutHandler = () => {
     localStorage.removeItem("user");
+    removeCookie("refreshToken")
     setUser(null);
   };
 

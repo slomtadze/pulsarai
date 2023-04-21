@@ -12,6 +12,20 @@ export const CHECK_USER = gql`
   }
 `;
 
+export const REFRESH_TOKEN = gql`
+  mutation RefreshToken($input: RefreshTokenInput!) {
+    refreshToken(input: $input) {
+        token
+        user {
+          name
+          _id
+          count
+        }
+      }
+    }
+  
+`
+
 export const LOGIN_MUTATION = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
