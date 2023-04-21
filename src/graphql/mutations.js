@@ -6,8 +6,6 @@ export const CHECK_USER = gql`
       user {
         name
         _id
-        email
-        password
         count
       }
     }
@@ -18,11 +16,10 @@ export const LOGIN_MUTATION = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
       token
+      refreshToken
       user {
         name
         _id
-        email
-        password
         count
       }
     }
@@ -32,11 +29,10 @@ export const SIGNUP_MUTATION = gql`
   mutation Signup($input: SignupInput!) {
     signup(input: $input) {
       token
+      refreshToken
       user {
         name
         _id
-        email
-        password
         count
       }
     }

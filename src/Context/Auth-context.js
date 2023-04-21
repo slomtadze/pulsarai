@@ -12,49 +12,6 @@ const AuthContext = React.createContext({
   logout: () => {},
 });
 
-/* const CHECK_USER = gql`
-  mutation CheckUser($input: CheckUserInput!) {
-    checkUser(input: $input) {
-      user {
-        name
-        _id
-        email
-        password
-        count
-      }
-    }
-  }
-`;
-
-const LOGIN_MUTATION = gql`
-  mutation Login($input: LoginInput!) {
-    login(input: $input) {
-      token
-      user {
-        name
-        _id
-        email
-        password
-        count
-      }
-    }
-  }
-`;
-const SIGNUP_MUTATION = gql`
-  mutation Signup($input: SignupInput!) {
-    signup(input: $input) {
-      token
-      user {
-        name
-        _id
-        email
-        password
-        count
-      }
-    }
-  }
-`; */
-
 export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -78,7 +35,7 @@ export const AuthContextProvider = (props) => {
             },
           });
           const {user: existUser} = response.data.checkUser
-          setUser({isFirstLogin: false, ...existUser})
+          setUser({...existUser})
           setIsLoading(false)
           navigate(`../user/${existUser._id}`)
         } catch (error) {
@@ -87,7 +44,7 @@ export const AuthContextProvider = (props) => {
       }
     };
     checkForLoggedInUser();
-  }, [checkUserMutation, navigate]);
+  }, [checkUserMutation]);
 
   const signUpHandler = async (email, password, name, navigate, setError) => {
     setIsLoading(true);

@@ -3,23 +3,24 @@ import { gql, useSubscription } from "@apollo/client";
 import AuthContext from "../Context/Auth-context";
 import Button from "../layout/Button";
 
-
+/* 
 const USER_COUNT_SUBSCRIPTION = gql`
   subscription  {
     userCountUpdated {
       updatedUserCount
     }
   }
-`;
+`; */
 
 
 
 const UserProfile = () => {
   const { user, logout } = useContext(AuthContext);
-  const { data, loading } = useSubscription(
+  console.log("userprofile", user)
+  /* const { data, loading } = useSubscription(
     USER_COUNT_SUBSCRIPTION, 
     {onData: (data) =>  console.log("data")}
-    );
+    ); */
   
   
   return (
