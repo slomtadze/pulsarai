@@ -25,7 +25,7 @@ export const AuthContextProvider = (props) => {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
+  /* useEffect(() => {
     const checkForLoggedInUser = async () => {
       const existingToken = localStorage.getItem("user");
       if (existingToken) {
@@ -81,7 +81,7 @@ export const AuthContextProvider = (props) => {
       }
     };
     checkForLoggedInUser();
-  }, [checkUserMutation]);
+  }, [checkUserMutation]); */
 
   const signUpHandler = async (email, password, name, navigate, setError) => {
     setIsLoading(true);

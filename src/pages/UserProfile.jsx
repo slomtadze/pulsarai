@@ -1,26 +1,26 @@
-import React, { useContext } from "react";
-import { gql, useSubscription } from "@apollo/client";
+import React, { useContext, useEffect } from "react";
+import { useSubscription } from "@apollo/client";
 import AuthContext from "../Context/Auth-context";
 import Button from "../layout/Button";
+import { USER_COUNT_SUBSCRIPTION } from "../graphql/mutations";
 
-/* 
-const USER_COUNT_SUBSCRIPTION = gql`
-  subscription  {
-    userCountUpdated {
-      updatedUserCount
-    }
-  }
-`; */
+
+
 
 
 
 const UserProfile = () => {
   const { user, logout } = useContext(AuthContext);
-  console.log("userprofile", user)
-  /* const { data, loading } = useSubscription(
+  const { data, loading } = useSubscription(
     USER_COUNT_SUBSCRIPTION, 
-    {onData: (data) =>  console.log("data")}
-    ); */
+      {onData: (data) =>  console.log(data)}
+    );
+
+    useEffect(() => {
+      console.log(data, loading)
+    }, [data, loading])
+
+  
   
   
   return (
