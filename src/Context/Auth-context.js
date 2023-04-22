@@ -25,7 +25,7 @@ export const AuthContextProvider = (props) => {
 
   const navigate = useNavigate()
 
-  /* useEffect(() => {
+  useEffect(() => {
     const checkForLoggedInUser = async () => {
       const existingToken = localStorage.getItem("user");
       if (existingToken) {
@@ -44,8 +44,8 @@ export const AuthContextProvider = (props) => {
           navigate(`../user/${existUser._id}`)
         } catch (error) {
           if(error.message === "TokenExpired"){
-            try {
-              
+            console.log("access token expired")
+            try {              
               const refreshToken = cookies.refreshToken
 
               console.log(refreshToken)
@@ -69,6 +69,7 @@ export const AuthContextProvider = (props) => {
               navigate(`../user/${user._id}`)
             } catch (error) {
               console.log(error.message)
+              setIsLoading(false)
               navigate("/")
             }
           }
@@ -81,7 +82,7 @@ export const AuthContextProvider = (props) => {
       }
     };
     checkForLoggedInUser();
-  }, [checkUserMutation]); */
+  }, [checkUserMutation]);
 
   const signUpHandler = async (email, password, name, navigate, setError) => {
     setIsLoading(true);

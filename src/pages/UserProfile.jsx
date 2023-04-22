@@ -17,10 +17,12 @@ const UserProfile = () => {
     );
 
     useEffect(() => {
-      console.log(data, loading)
-    }, [data, loading])
-
-  
+      if(data){
+        if(data.userCountUpdated > 3){
+          alert(`Number Of Active Users: ${data?.userCountUpdated}`)
+        }        
+      }      
+    }, [data])  
   
   
   return (
