@@ -44,6 +44,7 @@ export const SIGNUP_MUTATION = gql`
     signup(input: $input) {
       token
       refreshToken
+      usersCount
       user {
         name
         _id

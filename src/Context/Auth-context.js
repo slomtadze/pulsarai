@@ -74,6 +74,7 @@ export const AuthContextProvider = (props) => {
             }
           }
           console.log(error.message);
+          setIsLoading(false)
           if(error.message !== "TokenExpired"){
             navigate("/")
           }
@@ -96,12 +97,13 @@ export const AuthContextProvider = (props) => {
           },
         },
       });
-      const { token, refreshToken, user: newUser } = response.data.signup;
-      setUser({ isFirstLogin: true, ...newUser });
+      console.log(response.data.signup)
+      const { token, refreshToken, usersCount, user: newUser } = response.data.signup;
+      setUser({ isFirstLogin: true, usersCount, ...newUser });
       localStorage.setItem("user", token);
-      setCookie("refreshToken", refreshToken)
-      setIsLoading(false);      
+      setCookie("refreshToken", refreshToken)         
       navigate(`../user/${newUser._id}`);
+      setIsLoading(false);   
     } catch (error) {
       console.log(error);
       setError(error.message);
@@ -129,6 +131,7 @@ export const AuthContextProvider = (props) => {
     } catch (error) {
       console.log(error);
       setError(error.message);
+      setIsLoading(false)
     }
   };
 
