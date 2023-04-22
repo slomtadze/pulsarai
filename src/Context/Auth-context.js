@@ -101,9 +101,10 @@ export const AuthContextProvider = (props) => {
         setUser({ isFirstLogin: true, usersCount, ...newUser });
 
         localStorage.setItem("user", token);
-        setCookie("refreshToken", refreshToken)         
+        setCookie("refreshToken", refreshToken)   
+        setIsLoading(false);        
         navigate(`../user/${newUser._id}`);
-        setIsLoading(false);   
+         
       } catch (error) {
         setIsLoading(false)
         setError(error.message);        
