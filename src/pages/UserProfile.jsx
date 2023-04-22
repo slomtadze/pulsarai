@@ -5,13 +5,8 @@ import Button from "../layout/Button";
 import { USER_COUNT_SUBSCRIPTION } from "../graphql/mutations";
 
 
-
-
-
-
 const UserProfile = () => {
   const { user, logout } = useContext(AuthContext);
-  console.log(user)
   const { data, loading } = useSubscription(
     USER_COUNT_SUBSCRIPTION);
 
@@ -25,7 +20,6 @@ const UserProfile = () => {
 
     useEffect(() => {
       if(user?.usersCount > 3){
-        console.log(user)
         alert(`You are lucky person`)
       }
     },[user])

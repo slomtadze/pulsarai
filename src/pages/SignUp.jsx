@@ -1,7 +1,6 @@
 import SignWrapper from "../layout/SignWrapper";
 import Input from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
-
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useContext, useState } from "react";
@@ -18,8 +17,8 @@ const initialValues = {
 const validationSchema = Yup.object({
   name: Yup.string()
     .required("Required")
-    .matches(/^[a-zA-Z0-9_-]{3,16}$/, "Min 3 / Max 16 charachters"),
-  email: Yup.string().required("Required").email("Please enter a valid Email"),
+    .matches(/^^.{3,16}$/, "Min 3 / Max 16 charachters").matches(/^[^!@#$%^&*(),.?":{}|<>\\[\]';\s]+$/, "Symbols are not allowed"),
+  email: Yup.string().required("Required").matches(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, "Please enter a valid Email"),
   password: Yup.string()
     .required("Required")
     .matches(
@@ -64,8 +63,8 @@ const SignUp = () => {
               <Button title="Confirm" type="submit" />
               <Button
                 title="Cancel"
-                type="button"
-                onClick={() => navigate("/")}
+                type="reset"
+                onClick={() => setError(false)}
               />
             </div>
 

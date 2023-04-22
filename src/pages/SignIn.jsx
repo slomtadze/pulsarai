@@ -12,7 +12,7 @@ const initialValues = {
   password: "",
 };
 const validationSchema = Yup.object({
-  email: Yup.string().required("Requierd").email("Please enter a valid email"),
+  email: Yup.string().required("Requierd").matches(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, "Please enter a valid Email"),
   password: Yup.string().required("Required"),
 });
 
@@ -47,8 +47,8 @@ const SignIn = () => {
               <Button title="Login" type="submit" />
               <Button
                 title="Cancel"
-                type="button"
-                onClick={() => navigate("/")}
+                type="reset"
+                onClick={() => setError(false)}
               />
             </div>
             <p className="mt-2 text-white">
